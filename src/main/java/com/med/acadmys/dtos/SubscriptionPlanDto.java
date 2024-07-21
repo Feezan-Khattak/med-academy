@@ -13,5 +13,4 @@ public class SubscriptionPlanDto extends BaseEntityDto {
     private String description;
     private int durationMonths;
     private int price;
-    private Set<UserSubscriptionDto> userSubscriptions = new HashSet<>();
 }

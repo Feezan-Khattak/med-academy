@@ -20,4 +20,16 @@ public class UserSubscriptionController {
         Response response = userSubscriptionService.subscribeUser(request);
         return new ResponseEntity<>(response, response.isSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
+
+    @GetMapping("/un-subscribe")
+    ResponseEntity<Response> unsubscribeUser(@RequestParam Long userId) {
+        Response response = userSubscriptionService.unsubscribeUser(userId);
+        return new ResponseEntity<>(response, response.isSuccess() ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/update")
+    ResponseEntity<Response> updateUserSubscriptionPlan(@RequestBody UserSubscriptionRequest request) {
+        Response response = userSubscriptionService.updateUserSubscriptionPlan(request);
+        return new ResponseEntity<>(response, response.isSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+    }
 }
