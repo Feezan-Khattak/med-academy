@@ -19,7 +19,7 @@ INSERT INTO med_users (
                     NOW(),
                     NOW(),
                     'feezanktk2208@gmail.com',
-                    '$2a$10$qASyINfFgFH7OcG5syOXS.JUlIM8T3NJkH8JYT0mrUOaO5AQPEWFS',
+                    '$2a$10$xsnE6hE.W.KnTr.T5RwUNOPuiGLTIcVaZena03wCG2lEi/k4RVYwW',
                     'Super',
                     'Admin',
                     '627623',
