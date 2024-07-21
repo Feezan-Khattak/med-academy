@@ -146,4 +146,48 @@ public class QuestionService {
             return responseUtil.generateFailureResponse("No Category found, please provide the valid category");
         }
     }
+
+    public Response flagQuestion(Long questionId) {
+        Optional<Question> question = questionRepository.findById(questionId);
+        if(question.isPresent()) {
+            question.get().setFlag(true);
+            Question savedQuestion = questionRepository.save(question.get());
+            Type type = new TypeToken<QuestionDto>() {
+            }.getType();
+            QuestionDto response = modelMapper.map(savedQuestion, type);
+            return responseUtil.generateSuccessResponse(response);
+        } else {
+            return responseUtil.generateFailureResponse("No question found, please correct question id");
+        }
+    }
+
+    public Response unFlagQuestion(Long questionId) {
+        Optional<Question> question = questionRepository.findById(questionId);
+        if(question.isPresent()) {
+            question.get().setFlag(false);
+            Question savedQuestion = questionRepository.save(question.get());
+            Type type = new TypeToken<QuestionDto>() {
+            }.getType();
+            QuestionDto response = modelMapper.map(savedQuestion, type);
+            return responseUtil.generateSuccessResponse(response);
+        } else {
+            return responseUtil.generateFailureResponse("No question found, please correct question id");
+        }
+    }
+
+    public Response getAllFlagQuestions(Pageable pageable) {
+        try {
+            Page<Question> flagPage = questionRepository.findByFlag(true, pageable);
+            List<QuestionDto> questions = flagPage.getContent().stream()
+                    .map(question -> modelMapper.map(question, QuestionDto.class))
+                    .toList();
+            if (!questions.isEmpty()) {
+                return responseUtil.generateSuccessResponse(questions);
+            } else {
+                return responseUtil.generateFailureResponse("No question with flag found in The system");
+            }
+        } catch (Exception er) {
+            return responseUtil.generateFailureResponse(er.getLocalizedMessage());
+        }
+    }
 }

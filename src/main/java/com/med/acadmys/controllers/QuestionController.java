@@ -18,7 +18,7 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @PostMapping("/save")
-    public ResponseEntity<Response> saveQuestion(
+    ResponseEntity<Response> saveQuestion(
             @RequestParam String category,
             @RequestBody Question question
     ) {
@@ -27,7 +27,7 @@ public class QuestionController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Response> updateQuestion(
+    ResponseEntity<Response> updateQuestion(
             @RequestParam String category,
             @RequestBody Question question
     ) {
@@ -36,19 +36,19 @@ public class QuestionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getQuestionById(@PathVariable Long id) {
+    ResponseEntity<Response> getQuestionById(@PathVariable Long id) {
         Response response = questionService.getQuestionById(id);
         return new ResponseEntity<>(response, response.isSuccess() ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/code/{questionCode}")
-    public ResponseEntity<Response> getQuestionByQuestionCode(@PathVariable String questionCode) {
+    ResponseEntity<Response> getQuestionByQuestionCode(@PathVariable String questionCode) {
         Response response = questionService.getQuestionByQuestionCode(questionCode);
         return new ResponseEntity<>(response, response.isSuccess() ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Response> getAllQuestions(
+    ResponseEntity<Response> getAllQuestions(
             @RequestParam(name = "pageNumber", defaultValue = "0", required = false) int pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "10", required = false) int pageSize
     ) {
@@ -57,13 +57,13 @@ public class QuestionController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Response> deleteQuestion(@PathVariable Long id) {
+    ResponseEntity<Response> deleteQuestion(@PathVariable Long id) {
         Response response = questionService.deleteQuestion(id);
         return new ResponseEntity<>(response, response.isSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/by-child-category/{childCategory}")
-    public ResponseEntity<Response> getQuestionsByChildCategory(
+    ResponseEntity<Response> getQuestionsByChildCategory(
             @PathVariable String childCategory,
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int pageSize
@@ -71,5 +71,27 @@ public class QuestionController {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Response response = questionService.getQuestionsByCategory(childCategory, pageable);
         return new ResponseEntity<>(response, response.isSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/flag/{questionId}")
+    ResponseEntity<Response> flagQuestion(@PathVariable Long questionId) {
+        Response response = questionService.flagQuestion(questionId);
+        return new ResponseEntity<>(response, response.isSuccess() ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/un-flag/{questionId}")
+    ResponseEntity<Response> unFlagQuestion(@PathVariable Long questionId) {
+        Response response = questionService.unFlagQuestion(questionId);
+        return new ResponseEntity<>(response, response.isSuccess() ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/flag/all")
+    ResponseEntity<Response> getAllFlagQuestions(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize
+    ) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Response response = questionService.getAllFlagQuestions(pageable);
+        return new ResponseEntity<>(response, response.isSuccess() ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 }

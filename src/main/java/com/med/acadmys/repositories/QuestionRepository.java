@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     Optional<Question> findByQuestionCode(String questionCode);
     Page<Question> findByChildCategory(ChildCategory childCategory, Pageable pageable);
+
+    Page<Question> findByFlag(boolean flag, Pageable pageable);
 }
